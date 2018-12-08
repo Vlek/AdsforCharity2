@@ -1,0 +1,21 @@
+div#fullpage {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0px solid red;
+    text-align: center;
+    vertical-align: middle;
+}
+
+select, textarea {
+    width: calc(100% - 20px);
+    padding: 0px;
+    margin: 5px;
+}
+
+button {
+    width: calc(50% - 40px);
+    padding: 10px;
+    margin: 5px;
+}

@@ -1,0 +1,22 @@
+<mat-toolbar color="accent">
+  <button mat-icon-button [matMenuTriggerFor]="menu" id="burgerButton">
+    <mat-icon aria-label="Menu">menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a routerLink="/">
+      <button mat-menu-item>
+        <span>Watch Ads</span>
+      </button>
+    </a>
+    <a routerLink="/settings">
+      <button mat-menu-item>
+        <span>Settings</span>
+      </button>
+    </a>
+    <a routerLink="/about">
+      <button mat-menu-item>
+        <span>About</span>
+      </button>
+    </a>
+  </mat-menu>
+</mat-toolbar>
