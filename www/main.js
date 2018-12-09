@@ -191,6 +191,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _settings_settings_component__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./settings/settings.component */ "./src/app/settings/settings.component.ts");
 /* harmony import */ var _about_about_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./about/about.component */ "./src/app/about/about.component.ts");
 /* harmony import */ var _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./watchad/watchad.component */ "./src/app/watchad/watchad.component.ts");
+/* harmony import */ var _charities_charities_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./charities/charities.component */ "./src/app/charities/charities.component.ts");
+
 
 
 
@@ -216,7 +218,8 @@ var AppModule = /** @class */ (function () {
                 _toolbar_toolbar_component__WEBPACK_IMPORTED_MODULE_8__["ToolbarComponent"],
                 _settings_settings_component__WEBPACK_IMPORTED_MODULE_12__["SettingsComponent"],
                 _about_about_component__WEBPACK_IMPORTED_MODULE_13__["AboutComponent"],
-                _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__["WatchadComponent"]
+                _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__["WatchadComponent"],
+                _charities_charities_component__WEBPACK_IMPORTED_MODULE_15__["CharitiesComponent"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -237,6 +240,65 @@ var AppModule = /** @class */ (function () {
         })
     ], AppModule);
     return AppModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "./src/app/charities/charities.component.css":
+/*!***************************************************!*\
+  !*** ./src/app/charities/charities.component.css ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NoYXJpdGllcy9jaGFyaXRpZXMuY29tcG9uZW50LmNzcyJ9 */"
+
+/***/ }),
+
+/***/ "./src/app/charities/charities.component.html":
+/*!****************************************************!*\
+  !*** ./src/app/charities/charities.component.html ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<h4>Basic mat-select</h4>\n<mat-form-field>\n  <mat-select placeholder=\"Favorite food\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n</mat-form-field>\n"
+
+/***/ }),
+
+/***/ "./src/app/charities/charities.component.ts":
+/*!**************************************************!*\
+  !*** ./src/app/charities/charities.component.ts ***!
+  \**************************************************/
+/*! exports provided: CharitiesComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CharitiesComponent", function() { return CharitiesComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+
+
+var CharitiesComponent = /** @class */ (function () {
+    function CharitiesComponent() {
+        this.charities = [
+            { value: 0, viewValue: 'Random' },
+            { value: 1, viewValue: 'Habitat for Humanity' },
+            { value: 2, viewValue: 'The Foodbank' },
+            { value: 3, viewValue: 'WildAid' }
+        ];
+    }
+    CharitiesComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'app-charities',
+            template: __webpack_require__(/*! ./charities.component.html */ "./src/app/charities/charities.component.html"),
+            styles: [__webpack_require__(/*! ./charities.component.css */ "./src/app/charities/charities.component.css")]
+        })
+    ], CharitiesComponent);
+    return CharitiesComponent;
 }());
 
 
@@ -317,7 +379,7 @@ module.exports = "\r\nbutton#burgerButton {\r\n  position: absolute;\r\n  right:
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<mat-toolbar color=\"accent\">\n  <button mat-icon-button [matMenuTriggerFor]=\"menu\" id=\"burgerButton\">\n    <mat-icon aria-label=\"Menu\">menu</mat-icon>\n  </button>\n  <mat-menu #menu=\"matMenu\">\n    <a routerLink=\"/\">\n      <button mat-menu-item>\n        <span>Watch Ads</span>\n      </button>\n    </a>\n    <a routerLink=\"/settings\">\n      <button mat-menu-item>\n        <span>Settings</span>\n      </button>\n    </a>\n    <a routerLink=\"/about\">\n      <button mat-menu-item>\n        <span>About</span>\n      </button>\n    </a>\n  </mat-menu>\n</mat-toolbar>\n"
+module.exports = "<mat-toolbar color=\"accent\">\n  <button mat-icon-button [matMenuTriggerFor]=\"menu\" id=\"burgerButton\">\n    <mat-icon aria-label=\"Menu\">menu</mat-icon>\n  </button>\n  <mat-menu #menu=\"matMenu\">\n    <a routerLink=\"/\">\n      <button mat-menu-item>\n        <span>Watch Ads</span>\n      </button>\n    </a>\n    <!--<a routerLink=\"/settings\">-->\n      <!--<button mat-menu-item>-->\n        <!--<span>Settings</span>-->\n      <!--</button>-->\n    <!--</a>-->\n    <a routerLink=\"/about\">\n      <button mat-menu-item>\n        <span>About</span>\n      </button>\n    </a>\n  </mat-menu>\n</mat-toolbar>\n"
 
 /***/ }),
 
@@ -546,7 +608,7 @@ module.exports = "div#fullpage {\r\n  width: 100%;\r\n  height: 100%;\r\n  margi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: </h2>\n\n<button id='btn_showvideo'>Preparing Ad</button>\n"
+module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: </h2>\n\n<button id='btn_showvideo'>Preparing Ad</button>\n\n<app-charities></app-charities>\n"
 
 /***/ }),
 

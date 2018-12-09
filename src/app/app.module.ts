@@ -13,6 +13,7 @@ import { RouterModule } from '@angular/router';
 import { SettingsComponent } from './settings/settings.component';
 import { AboutComponent } from './about/about.component';
 import { WatchadComponent } from './watchad/watchad.component';
+import { CharitiesComponent } from './charities/charities.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { WatchadComponent } from './watchad/watchad.component';
     ToolbarComponent,
     SettingsComponent,
     AboutComponent,
-    WatchadComponent
+    WatchadComponent,
+    CharitiesComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +35,7 @@ import { WatchadComponent } from './watchad/watchad.component';
     RouterModule.forRoot([
       {path: '', component: WatchadComponent},
       {path: 'settings', component: SettingsComponent},
-      {path: 'about', component: AboutComponent}
+      {path: 'about', component: AboutComponent},
     ])
   ],
   providers: [],

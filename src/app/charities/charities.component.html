@@ -1,0 +1,5 @@
+<mat-select id="charitySelect" placeholder="Charity" [value]=0>
+  <mat-option *ngFor="let charity of charities" [value]="charity.value">
+    {{charity.viewValue}}
+  </mat-option>
+</mat-select>

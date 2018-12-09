@@ -1,28 +1,26 @@
 div#fullpage {
-  width: 100%;
-  height: 100%;
   margin: 0;
   padding: 0;
   border: 0 solid red;
   text-align: center;
   vertical-align: middle;
-}
-
-button#btn_showvideo {
-  width: calc(50% - 40px);
-  padding: 10px;
-  margin: 0;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
+button#btn_showvideo {
+  width: calc(80% - 40px);
+  padding: 10px;
+  margin: 0;
+}
+
 #numAdsWatched {
   text-align: center;
 }
 
-.mat-select-value {
+::ng-deep .mat-select-value {
   color: black;
   border: black;
 }

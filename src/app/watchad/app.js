@@ -116,6 +116,8 @@ export function initAd() {
     if (e.rewardAmount > 0) {
       console.log("Congratulations, you were rewarded!");
 
+
+
       $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
         JSON.stringify({'charity': 0}))
         .fail(function(e){

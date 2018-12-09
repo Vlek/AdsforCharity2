@@ -10,6 +10,7 @@ import * as app from './app.js';
 })
 
 export class WatchadComponent implements OnInit, OnDestroy {
+  adsWatched = 0;
   ngOnInit(): void {
     $('#btn_showvideo').prop('disabled', true);
     // on mobile device, we must wait the 'deviceready' event fired by cordova
@@ -18,6 +19,7 @@ export class WatchadComponent implements OnInit, OnDestroy {
       document.addEventListener('deviceready', app.onDeviceReady, false);
     } else {
       console.log('Browsers are not supported. :(');
+      console.log(this.adsWatched);
     }
   }
   ngOnDestroy() {
