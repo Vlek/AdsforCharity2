@@ -117,7 +117,11 @@ export function initAd() {
       console.log("Congratulations, you were rewarded!");
 
       $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-        {'charity': 0});
+        JSON.stringify({'charity': 0}))
+        .fail(function(e){
+          console.log("Failed to send data to server!");
+          console.log(e);
+        });
     }
   });
 
