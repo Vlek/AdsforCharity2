@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 
 import * as $ from 'jquery';
 
@@ -10,9 +10,11 @@ import * as $ from 'jquery';
 
 export class WatchadComponent implements OnInit, OnDestroy {
   public adsWatched: number;
+
   constructor () {
     this.adsWatched = 0;
   }
+
   ngOnInit(): void {
     const that = this;
     let admobid = {};
@@ -139,6 +141,7 @@ export class WatchadComponent implements OnInit, OnDestroy {
         if (e.rewardAmount > 0) {
           console.log('Congratulations, you were rewarded!');
 
+
           $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
             JSON.stringify({'charity': 0}))
             .done(function() {
@@ -192,6 +195,7 @@ export class WatchadComponent implements OnInit, OnDestroy {
       console.log('Browsers are not supported. :(');
     }
   }
+
   ngOnDestroy() {
     $(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
     $('#btn_showvideo').off('click');

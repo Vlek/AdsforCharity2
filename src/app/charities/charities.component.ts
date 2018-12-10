@@ -12,6 +12,7 @@ export interface Charity {
 })
 
 export class CharitiesComponent {
+  public selectedValue;
   charities: Charity[] = [
     {value: 0, viewValue: 'Random'},
     {value: 1, viewValue: 'Habitat for Humanity'},
