@@ -2,6 +2,11 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 
 import * as $ from 'jquery';
 
+export interface Charity {
+  value: number;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-watchad',
   templateUrl: './watchad.component.html',
@@ -9,10 +14,17 @@ import * as $ from 'jquery';
 })
 
 export class WatchadComponent implements OnInit, OnDestroy {
-  public adsWatched: number;
+  public adsWatched = 0;
+  public selectedCharity = 0;
+
+  charities: Charity[] = [
+    {value: 0, viewValue: 'Random'},
+    {value: 1, viewValue: 'Habitat for Humanity'},
+    {value: 2, viewValue: 'The Foodbank'},
+    {value: 3, viewValue: 'WildAid'}
+  ];
 
   constructor () {
-    this.adsWatched = 0;
   }
 
   ngOnInit(): void {
@@ -141,15 +153,23 @@ export class WatchadComponent implements OnInit, OnDestroy {
         if (e.rewardAmount > 0) {
           console.log('Congratulations, you were rewarded!');
 
+          let charityNumber = that.selectedCharity;
+
+          if (charityNumber === 0) {
+            charityNumber = Math.floor(
+              Math.random() * that.charities.length) + 1;
+          }
 
           $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-            JSON.stringify({'charity': 0}))
+            JSON.stringify({'charity': charityNumber}))
             .done(function() {
-              that.adsWatched += 1;
             })
             .fail(function(err) {
               console.log('Failed to send data to server!');
               console.log(err);
+            })
+            .always(function() {
+              that.adsWatched += 1;
             });
         }
       });
@@ -199,5 +219,9 @@ export class WatchadComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     $(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
     $('#btn_showvideo').off('click');
+  }
+
+  onSelectChange(event) {
+    this.selectedCharity = event.value;
   }
 }

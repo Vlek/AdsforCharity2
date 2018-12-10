@@ -232,7 +232,7 @@ var AppModule = /** @class */ (function () {
                 _angular_router__WEBPACK_IMPORTED_MODULE_11__["RouterModule"].forRoot([
                     { path: '', component: _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__["WatchadComponent"] },
                     { path: 'settings', component: _settings_settings_component__WEBPACK_IMPORTED_MODULE_12__["SettingsComponent"] },
-                    { path: 'about', component: _about_about_component__WEBPACK_IMPORTED_MODULE_13__["AboutComponent"] }
+                    { path: 'about', component: _about_about_component__WEBPACK_IMPORTED_MODULE_13__["AboutComponent"] },
                 ])
             ],
             providers: [],
@@ -253,7 +253,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL2NoYXJpdGllcy9jaGFyaXRpZXMuY29tcG9uZW50LmNzcyJ9 */"
+module.exports = "\r\nmat-select {\r\n  background-color: white;\r\n  color: black;\r\n  border : 1px solid #666666;\r\n}\r\n\r\nmat-select span {\r\n  color: black;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY2hhcml0aWVzL2NoYXJpdGllcy5jb21wb25lbnQuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFDQTtFQUNFLHdCQUF3QjtFQUN4QixhQUFhO0VBQ2IsMkJBQTJCO0NBQzVCOztBQUVEO0VBQ0UsYUFBYTtDQUNkIiwiZmlsZSI6InNyYy9hcHAvY2hhcml0aWVzL2NoYXJpdGllcy5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiXHJcbm1hdC1zZWxlY3Qge1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHdoaXRlO1xyXG4gIGNvbG9yOiBibGFjaztcclxuICBib3JkZXIgOiAxcHggc29saWQgIzY2NjY2NjtcclxufVxyXG5cclxubWF0LXNlbGVjdCBzcGFuIHtcclxuICBjb2xvcjogYmxhY2s7XHJcbn1cclxuIl19 */"
 
 /***/ }),
 
@@ -264,7 +264,7 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h4>Basic mat-select</h4>\n<mat-form-field>\n  <mat-select placeholder=\"Favorite food\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n</mat-form-field>\n"
+module.exports = "<mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=0>\n  <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n    {{charity.viewValue}}\n  </mat-option>\n</mat-select>\n"
 
 /***/ }),
 
@@ -417,179 +417,6 @@ var ToolbarComponent = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/watchad/app.js":
-/*!********************************!*\
-  !*** ./src/app/watchad/app.js ***!
-  \********************************/
-/*! exports provided: onDeviceReady, initAd */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "onDeviceReady", function() { return onDeviceReady; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initAd", function() { return initAd; });
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-
-
-let appData = JSON.parse(window.localStorage.getItem("data"));
-
-if (appData === null) {
-  appData = {
-    adsWatched: {},
-    charities: [
-      'Southern Environmental Law Center',
-      "Children's Scholarship Fund Philadelphia",
-      'Wildlife Conversation Network'
-    ]
-  };
-}
-
-let admobid = {};
-
-if (/(android)/i.test(navigator.userAgent)) {
-  admobid = { // for Android
-    banner: 'ca-app-pub-3940256099942544/6300978111',
-    interstitial: 'ca-app-pub-3940256099942544/1033173712',
-    rewardvideo: 'ca-app-pub-3940256099942544/5224354917'
-  };
-  } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
-  admobid = { // for iOS
-    banner: 'ca-app-pub-3940256099942544/4480807092',
-    interstitial: 'ca-app-pub-3940256099942544/4411468910',
-    rewardvideo: 'ca-app-pub-3940256099942544/1712485313'
-  };
-  } else {
-  admobid = { // for Windows Phone
-    banner: 'ca-app-pub-6869992474017983/8878394753',
-    interstitial: 'ca-app-pub-6869992474017983/1355127956',
-    rewardvideo: ''
-  };
-}
-
-function onDeviceReady() {
-  if (!AdMob) {
-    alert('admob plugin not ready');
-    return;
-  }
-
-
-  initAd();
-}
-
-function prepareVideo() {
-  AdMob.prepareRewardVideoAd({
-    adId:admobid.rewardvideo,
-    autoShow: false,
-  }, () => {
-
-  }, (e) => {
-    console.log("Failed to prepare reward video ad");
-    console.log(e);
-  });
-}
-
-function initAd() {
-  AdMob.getAdSettings(function(info){
-    info.adTrackingEnabled = info.adTrackingEnabled || '?';
-
-    console.log('adId: ' + info.adId + '\n' +
-      'adTrackingEnabled: ' + info.adTrackingEnabled);
-  }, function() {
-    console.log('failed to get user ad settings');
-  });
-
-  AdMob.setOptions({
-    isTesting: true,
-    bgColor: 'black',
-  });
-
-  // new events, with variable to differentiate: adNetwork, adType, adEvent
-  jquery__WEBPACK_IMPORTED_MODULE_0__(document).on('onAdFailLoad', function(e) {
-    // when jquery is used, it will hijack the event,
-    // so we have to get data from original event
-    if (typeof e.originalEvent !== 'undefined') {
-      e = e.originalEvent;
-    }
-
-    const data = e.detail || e.data || e;
-    data.adNetwork = data.adNetwork || '';
-    data.adType = data.adType || '';
-    data.adEvent = data.adEvent || '';
-
-    alert('error: ' + data.error +
-      ', reason: ' + data.reason +
-      ', adNetwork: ' + data.adNetwork +
-      ', adType: ' + data.adType +
-      ', adEvent: ' + data.adEvent);
-  });
-
-  jquery__WEBPACK_IMPORTED_MODULE_0__(document).on('onAdLoaded', function(e) {
-    if (typeof e.originalEvent !== 'undefined') {
-      e = e.originalEvent;
-    }
-    const data = e.data || e;
-
-    if(data.adType === 'rewardvideo') {
-      jquery__WEBPACK_IMPORTED_MODULE_0__('#btn_showvideo').prop({
-        'disabled': false,
-        'textContent': "Watch Ad!"
-      });
-    }
-  });
-
-  jquery__WEBPACK_IMPORTED_MODULE_0__(document).on('onAdPresent', function(e) {
-    if (typeof e.originalEvent !== 'undefined') {
-      e = e.originalEvent;
-    }
-
-    e.rewardAmount = e.rewardAmount || 0;
-
-    if (e.rewardAmount > 0) {
-      console.log("Congratulations, you were rewarded!");
-
-      jquery__WEBPACK_IMPORTED_MODULE_0__["post"]('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-        JSON.stringify({'charity': 0}))
-        .fail(function(e){
-          console.log("Failed to send data to server!");
-          console.log(e);
-        });
-    }
-  });
-
-  jquery__WEBPACK_IMPORTED_MODULE_0__(document).on('onAdDismiss', function(e) {
-    if (typeof e.originalEvent !== 'undefined') {
-      e = e.originalEvent;
-    }
-    const data = e.data || e;
-
-    if (data.adType === 'rewardvideo') {
-      jquery__WEBPACK_IMPORTED_MODULE_0__('#btn_showvideo').prop({
-        'disabled': true,
-        'textContent': "Preparing Ad"
-      });
-
-      prepareVideo();
-    }
-  });
-
-  jquery__WEBPACK_IMPORTED_MODULE_0__('#btn_showvideo').on("click",function() {
-    AdMob.showRewardVideoAd((e) => {
-      // This is just the success callback for Showing the ad,
-      // it has nothing to do with whether or not they actually
-      // watched the damn thing!
-    }, (e) => {
-      console.log("showRewardVideoAd Failure callback");
-      console.log(e);
-    });
-  });
-
-  prepareVideo();
-}
-
-
-/***/ }),
-
 /***/ "./src/app/watchad/watchad.component.css":
 /*!***********************************************!*\
   !*** ./src/app/watchad/watchad.component.css ***!
@@ -597,7 +424,7 @@ function initAd() {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "div#fullpage {\r\n  width: 100%;\r\n  height: 100%;\r\n  margin: 0;\r\n  padding: 0;\r\n  border: 0 solid red;\r\n  text-align: center;\r\n  vertical-align: middle;\r\n}\r\n\r\nbutton#btn_showvideo {\r\n  width: calc(50% - 40px);\r\n  padding: 10px;\r\n  margin: 0;\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  -webkit-transform: translate(-50%, -50%);\r\n          transform: translate(-50%, -50%);\r\n}\r\n\r\n#numAdsWatched {\r\n  text-align: center;\r\n}\r\n\r\n.mat-select-value {\r\n  color: black;\r\n  border: black;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvd2F0Y2hhZC93YXRjaGFkLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxZQUFZO0VBQ1osYUFBYTtFQUNiLFVBQVU7RUFDVixXQUFXO0VBQ1gsb0JBQW9CO0VBQ3BCLG1CQUFtQjtFQUNuQix1QkFBdUI7Q0FDeEI7O0FBRUQ7RUFDRSx3QkFBd0I7RUFDeEIsY0FBYztFQUNkLFVBQVU7RUFDVixtQkFBbUI7RUFDbkIsU0FBUztFQUNULFVBQVU7RUFDVix5Q0FBaUM7VUFBakMsaUNBQWlDO0NBQ2xDOztBQUVEO0VBQ0UsbUJBQW1CO0NBQ3BCOztBQUVEO0VBQ0UsYUFBYTtFQUNiLGNBQWM7Q0FDZiIsImZpbGUiOiJzcmMvYXBwL3dhdGNoYWQvd2F0Y2hhZC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiZGl2I2Z1bGxwYWdlIHtcclxuICB3aWR0aDogMTAwJTtcclxuICBoZWlnaHQ6IDEwMCU7XHJcbiAgbWFyZ2luOiAwO1xyXG4gIHBhZGRpbmc6IDA7XHJcbiAgYm9yZGVyOiAwIHNvbGlkIHJlZDtcclxuICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbiAgdmVydGljYWwtYWxpZ246IG1pZGRsZTtcclxufVxyXG5cclxuYnV0dG9uI2J0bl9zaG93dmlkZW8ge1xyXG4gIHdpZHRoOiBjYWxjKDUwJSAtIDQwcHgpO1xyXG4gIHBhZGRpbmc6IDEwcHg7XHJcbiAgbWFyZ2luOiAwO1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDUwJTtcclxuICBsZWZ0OiA1MCU7XHJcbiAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XHJcbn1cclxuXHJcbiNudW1BZHNXYXRjaGVkIHtcclxuICB0ZXh0LWFsaWduOiBjZW50ZXI7XHJcbn1cclxuXHJcbi5tYXQtc2VsZWN0LXZhbHVlIHtcclxuICBjb2xvcjogYmxhY2s7XHJcbiAgYm9yZGVyOiBibGFjaztcclxufVxyXG4iXX0= */"
+module.exports = "div#fullpage {\r\n  margin: 0;\r\n  padding: 0;\r\n  border: 0 solid red;\r\n  text-align: center;\r\n  vertical-align: middle;\r\n  position: absolute;\r\n  top: 50%;\r\n  left: 50%;\r\n  -webkit-transform: translate(-50%, -50%);\r\n          transform: translate(-50%, -50%);\r\n}\r\n\r\nbutton#btn_showvideo {\r\n  width: calc(80% - 40px);\r\n  padding: 10px;\r\n  margin: 0;\r\n}\r\n\r\n#numAdsWatched {\r\n  text-align: center;\r\n}\r\n\r\n::ng-deep .mat-select-value {\r\n  color: black;\r\n  border: black;\r\n}\r\n\r\nmat-select {\r\n  background-color: white;\r\n  color: black;\r\n  border : 1px solid black;\r\n}\r\n\r\nmat-select span {\r\n  color: black;\r\n}\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvd2F0Y2hhZC93YXRjaGFkLmNvbXBvbmVudC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxVQUFVO0VBQ1YsV0FBVztFQUNYLG9CQUFvQjtFQUNwQixtQkFBbUI7RUFDbkIsdUJBQXVCO0VBQ3ZCLG1CQUFtQjtFQUNuQixTQUFTO0VBQ1QsVUFBVTtFQUNWLHlDQUFpQztVQUFqQyxpQ0FBaUM7Q0FDbEM7O0FBRUQ7RUFDRSx3QkFBd0I7RUFDeEIsY0FBYztFQUNkLFVBQVU7Q0FDWDs7QUFFRDtFQUNFLG1CQUFtQjtDQUNwQjs7QUFFRDtFQUNFLGFBQWE7RUFDYixjQUFjO0NBQ2Y7O0FBRUQ7RUFDRSx3QkFBd0I7RUFDeEIsYUFBYTtFQUNiLHlCQUF5QjtDQUMxQjs7QUFFRDtFQUNFLGFBQWE7Q0FDZCIsImZpbGUiOiJzcmMvYXBwL3dhdGNoYWQvd2F0Y2hhZC5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiZGl2I2Z1bGxwYWdlIHtcclxuICBtYXJnaW46IDA7XHJcbiAgcGFkZGluZzogMDtcclxuICBib3JkZXI6IDAgc29saWQgcmVkO1xyXG4gIHRleHQtYWxpZ246IGNlbnRlcjtcclxuICB2ZXJ0aWNhbC1hbGlnbjogbWlkZGxlO1xyXG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICB0b3A6IDUwJTtcclxuICBsZWZ0OiA1MCU7XHJcbiAgdHJhbnNmb3JtOiB0cmFuc2xhdGUoLTUwJSwgLTUwJSk7XHJcbn1cclxuXHJcbmJ1dHRvbiNidG5fc2hvd3ZpZGVvIHtcclxuICB3aWR0aDogY2FsYyg4MCUgLSA0MHB4KTtcclxuICBwYWRkaW5nOiAxMHB4O1xyXG4gIG1hcmdpbjogMDtcclxufVxyXG5cclxuI251bUFkc1dhdGNoZWQge1xyXG4gIHRleHQtYWxpZ246IGNlbnRlcjtcclxufVxyXG5cclxuOjpuZy1kZWVwIC5tYXQtc2VsZWN0LXZhbHVlIHtcclxuICBjb2xvcjogYmxhY2s7XHJcbiAgYm9yZGVyOiBibGFjaztcclxufVxyXG5cclxubWF0LXNlbGVjdCB7XHJcbiAgYmFja2dyb3VuZC1jb2xvcjogd2hpdGU7XHJcbiAgY29sb3I6IGJsYWNrO1xyXG4gIGJvcmRlciA6IDFweCBzb2xpZCBibGFjaztcclxufVxyXG5cclxubWF0LXNlbGVjdCBzcGFuIHtcclxuICBjb2xvcjogYmxhY2s7XHJcbn1cclxuIl19 */"
 
 /***/ }),
 
@@ -608,7 +435,7 @@ module.exports = "div#fullpage {\r\n  width: 100%;\r\n  height: 100%;\r\n  margi
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: </h2>\n\n<button id='btn_showvideo'>Preparing Ad</button>\n\n<app-charities></app-charities>\n"
+module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: {{adsWatched}}</h2>\n\n<div id=\"fullpage\">\n  <button id='btn_showvideo'>Preparing Ad</button>\n  <br><br><br>\n  <mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=selectedCharity (selectionChange)=\"onSelectChange($event)\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n</div>\n"
 
 /***/ }),
 
@@ -626,20 +453,179 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 /* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _app_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.js */ "./src/app/watchad/app.js");
-
 
 
 
 var WatchadComponent = /** @class */ (function () {
     function WatchadComponent() {
+        this.adsWatched = 0;
+        this.selectedCharity = 0;
+        this.charities = [
+            { value: 0, viewValue: 'Random' },
+            { value: 1, viewValue: 'Habitat for Humanity' },
+            { value: 2, viewValue: 'The Foodbank' },
+            { value: 3, viewValue: 'WildAid' }
+        ];
     }
     WatchadComponent.prototype.ngOnInit = function () {
+        var that = this;
+        var admobid = {};
+        var appData = JSON.parse(window.localStorage.getItem('data'));
+        if (appData === null) {
+            appData = {
+                numWatched: 0,
+                charityChoice: 0
+            };
+        }
+        var onDeviceReady = function () {
+            // @ts-ignore
+            if (!AdMob) {
+                alert('admob plugin not ready');
+                return;
+            }
+            initAd();
+        };
+        function prepareVideo() {
+            // @ts-ignore
+            AdMob.prepareRewardVideoAd({
+                adId: admobid['rewardvideo'],
+                autoShow: false,
+            }, function () {
+            }, function (e) {
+                console.log('Failed to prepare reward video ad');
+                console.log(e);
+            });
+        }
+        function initAd() {
+            if (/(android)/i.test(navigator.userAgent)) {
+                admobid = {
+                    banner: 'ca-app-pub-3940256099942544/6300978111',
+                    interstitial: 'ca-app-pub-3940256099942544/1033173712',
+                    rewardvideo: 'ca-app-pub-3940256099942544/5224354917'
+                };
+            }
+            else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+                admobid = {
+                    banner: 'ca-app-pub-3940256099942544/4480807092',
+                    interstitial: 'ca-app-pub-3940256099942544/4411468910',
+                    rewardvideo: 'ca-app-pub-3940256099942544/1712485313'
+                };
+            }
+            else {
+                admobid = {
+                    banner: 'ca-app-pub-6869992474017983/8878394753',
+                    interstitial: 'ca-app-pub-6869992474017983/1355127956',
+                    rewardvideo: 'ca-app-pub-3940256099942544/5224354917'
+                };
+            }
+            // @ts-ignore
+            AdMob.getAdSettings(function (info) {
+                info.adTrackingEnabled = info.adTrackingEnabled || '?';
+                console.log('adId: ' + info.adId + '\n' +
+                    'adTrackingEnabled: ' + info.adTrackingEnabled);
+            }, function () {
+                console.log('failed to get user ad settings');
+            });
+            // @ts-ignore
+            AdMob.setOptions({
+                isTesting: true,
+                bgColor: 'black',
+            });
+            // new events, with variable to differentiate: adNetwork, adType, adEvent
+            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdFailLoad', function (e) {
+                // when jquery is used, it will hijack the event,
+                // so we have to get data from original event
+                if (typeof e.originalEvent !== 'undefined') {
+                    // @ts-ignore
+                    e = e.originalEvent;
+                }
+                var data = e.detail || e.data || e;
+                // @ts-ignore
+                data.adNetwork = data.adNetwork || '';
+                // @ts-ignore
+                data.adType = data.adType || '';
+                // @ts-ignore
+                data.adEvent = data.adEvent || '';
+                // @ts-ignore
+                alert('error: ' + data.error +
+                    ', reason: ' + data['reason'] +
+                    ', adNetwork: ' + data['adNetwork'] +
+                    ', adType: ' + data['adType'] +
+                    ', adEvent: ' + data['adEvent']);
+            });
+            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdLoaded', function (e) {
+                if (typeof e.originalEvent !== 'undefined') {
+                    // @ts-ignore
+                    e = e.originalEvent;
+                }
+                var data = e.data || e;
+                // @ts-ignore
+                if (data.adType === 'rewardvideo') {
+                    jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop({
+                        'disabled': false,
+                        'textContent': 'Watch Ad!'
+                    });
+                }
+            });
+            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdPresent', function (e) {
+                if (typeof e.originalEvent !== 'undefined') {
+                    // @ts-ignore
+                    e = e.originalEvent;
+                }
+                // @ts-ignore
+                e.rewardAmount = e.rewardAmount || 0;
+                // @ts-ignore
+                if (e.rewardAmount > 0) {
+                    console.log('Congratulations, you were rewarded!');
+                    var charityNumber = that.selectedCharity;
+                    if (charityNumber === 0) {
+                        charityNumber = Math.floor(Math.random() * that.charities.length) + 1;
+                    }
+                    jquery__WEBPACK_IMPORTED_MODULE_2__["post"]('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity', JSON.stringify({ 'charity': charityNumber }))
+                        .done(function () {
+                    })
+                        .fail(function (err) {
+                        console.log('Failed to send data to server!');
+                        console.log(err);
+                    })
+                        .always(function () {
+                        that.adsWatched += 1;
+                    });
+                }
+            });
+            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdDismiss', function (e) {
+                if (typeof e.originalEvent !== 'undefined') {
+                    // @ts-ignore
+                    e = e.originalEvent;
+                }
+                var data = e.data || e;
+                // @ts-ignore
+                if (data.adType === 'rewardvideo') {
+                    jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop({
+                        'disabled': true,
+                        'textContent': 'Preparing Ad'
+                    });
+                    prepareVideo();
+                }
+            });
+            jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').on('click', function () {
+                // @ts-ignore
+                AdMob.showRewardVideoAd(function () {
+                    // This is just the success callback for Showing the ad,
+                    // it has nothing to do with whether or not they actually
+                    // watched the damn thing!
+                }, function (e) {
+                    console.log('showRewardVideoAd Failure callback');
+                    console.log(e);
+                });
+            });
+            prepareVideo();
+        }
         jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop('disabled', true);
         // on mobile device, we must wait the 'deviceready' event fired by cordova
         if (/(ipad|iphone|ipod|android|windows phone)/i
             .test(navigator.userAgent)) {
-            document.addEventListener('deviceready', _app_js__WEBPACK_IMPORTED_MODULE_3__["onDeviceReady"], false);
+            document.addEventListener('deviceready', onDeviceReady, false);
         }
         else {
             console.log('Browsers are not supported. :(');
@@ -649,12 +635,16 @@ var WatchadComponent = /** @class */ (function () {
         jquery__WEBPACK_IMPORTED_MODULE_2__(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
         jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').off('click');
     };
+    WatchadComponent.prototype.onSelectChange = function (event) {
+        this.selectedCharity = event.value;
+    };
     WatchadComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-watchad',
             template: __webpack_require__(/*! ./watchad.component.html */ "./src/app/watchad/watchad.component.html"),
             styles: [__webpack_require__(/*! ./watchad.component.css */ "./src/app/watchad/watchad.component.css")]
-        })
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], WatchadComponent);
     return WatchadComponent;
 }());

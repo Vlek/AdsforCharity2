@@ -24,3 +24,13 @@ button#btn_showvideo {
   color: black;
   border: black;
 }
+
+mat-select {
+  background-color: white;
+  color: black;
+  border : 1px solid black;
+}
+
+mat-select span {
+  color: black;
+}

@@ -3,5 +3,9 @@
 <div id="fullpage">
   <button id='btn_showvideo'>Preparing Ad</button>
   <br><br><br>
-  <app-charities></app-charities>
+  <mat-select id="charitySelect" placeholder="Charity" [value]=selectedCharity (selectionChange)="onSelectChange($event)">
+    <mat-option *ngFor="let charity of charities" [value]="charity.value">
+      {{charity.viewValue}}
+    </mat-option>
+  </mat-select>
 </div>
