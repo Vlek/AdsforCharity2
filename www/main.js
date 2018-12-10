@@ -438,7 +438,7 @@ module.exports = "div#fullpage {\r\n  margin: 0;\r\n  padding: 0;\r\n  border: 0
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: {{adsWatched}}</h2>\n\n<div id=\"fullpage\">\n  <button id='btn_showvideo'>Preparing Ad</button>\n  <br><br><br>\n  <mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=selectedCharity (selectionChange)=\"onSelectChange($event)\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n\n  <br><br><br>\n  <button id=\"adTest\"></button>\n</div>\n"
+module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: {{adsWatched}}</h2>\n\n<div id=\"fullpage\">\n  <button id='btn_showvideo'>Preparing Ad</button>\n  <br><br><br>\n  <mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=selectedCharity (selectionChange)=\"onSelectChange($event)\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n</div>\n"
 
 /***/ }),
 
@@ -642,10 +642,6 @@ var WatchadComponent = /** @class */ (function () {
         else {
             console.log('Browsers are not supported. :(');
         }
-        jquery__WEBPACK_IMPORTED_MODULE_3__('#adTest').on('click', function () {
-            // @ts-ignore
-            that.appData.numWatched += 1;
-        });
     };
     WatchadComponent.prototype.ngOnDestroy = function () {
         jquery__WEBPACK_IMPORTED_MODULE_3__(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');

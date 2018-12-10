@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy, Injector} from '@angular/core';
-import {HttpClient, HttpHandler} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 
 import * as $ from 'jquery';
 
@@ -225,11 +225,6 @@ export class WatchadComponent implements OnInit, OnDestroy {
     } else {
       console.log('Browsers are not supported. :(');
     }
-
-    $('#adTest').on('click', function() {
-      // @ts-ignore
-      that.appData.numWatched += 1;
-    });
   }
 
   ngOnDestroy() {
