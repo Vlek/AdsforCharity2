@@ -19,6 +19,10 @@ export class WatchadComponent implements OnInit, OnDestroy {
   public adsWatched = 0;
   public selectedCharity = 0;
   private http: HttpClient;
+  public appData: object = {
+    numWatched: 0,
+    charityChoice: 0
+  };
 
   charities: Charity[] = [
     {value: 0, viewValue: 'Random'},
@@ -29,20 +33,22 @@ export class WatchadComponent implements OnInit, OnDestroy {
 
   constructor (private injector: Injector) {
     this.http = injector.get(HttpClient);
+
+    const localData = JSON.parse(window.localStorage.getItem('data'));
+
+    if (localData !== null) {
+      this.appData = {...this.appData, ...localData};
+    }
+
+    // @ts-ignore
+    this.adsWatched = this.appData.numWatched;
+    // @ts-ignore
+    this.selectedCharity = this.appData.charityChoice;
   }
 
   ngOnInit(): void {
     const that = this;
     let admobid = {};
-
-    let appData = JSON.parse(window.localStorage.getItem('data'));
-
-    if (appData === null) {
-      appData = {
-        numWatched: 0,
-        charityChoice: 0
-      };
-    }
 
     const onDeviceReady = () => {
       // @ts-ignore
@@ -160,8 +166,8 @@ export class WatchadComponent implements OnInit, OnDestroy {
           let charityNumber = that.selectedCharity;
 
           if (charityNumber === 0) {
-            charityNumber = Math.floor(
-              Math.random() * that.charities.length) + 1;
+            charityNumber = Math.ceil(
+              Math.random() * that.charities.length - 1);
           }
 
 
@@ -173,19 +179,9 @@ export class WatchadComponent implements OnInit, OnDestroy {
             })
             .finally(function() {
               that.adsWatched += 1;
+              // @ts-ignore
+              that.appData.numWatched += 1;
             });
-
-          // $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-          //   JSON.stringify({'charity': charityNumber}))
-          //   .done(function() {
-          //   })
-          //   .fail(function(err) {
-          //     console.log('Failed to send data to server!');
-          //     console.log(err);
-          //   })
-          //   .always(function() {
-          //     that.adsWatched += 1;
-          //   });
         }
       });
 
@@ -229,14 +225,23 @@ export class WatchadComponent implements OnInit, OnDestroy {
     } else {
       console.log('Browsers are not supported. :(');
     }
+
+    $('#adTest').on('click', function() {
+      // @ts-ignore
+      that.appData.numWatched += 1;
+    });
   }
 
   ngOnDestroy() {
     $(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
     $('#btn_showvideo').off('click');
+
+    window.localStorage.setItem('data', JSON.stringify(this.appData));
   }
 
   onSelectChange(event) {
     this.selectedCharity = event.value;
+    // @ts-ignore
+    this.appData.chariyChoice = event.value;
   }
 }

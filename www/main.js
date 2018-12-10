@@ -438,7 +438,7 @@ module.exports = "div#fullpage {\r\n  margin: 0;\r\n  padding: 0;\r\n  border: 0
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: {{adsWatched}}</h2>\n\n<div id=\"fullpage\">\n  <button id='btn_showvideo'>Preparing Ad</button>\n  <br><br><br>\n  <mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=selectedCharity (selectionChange)=\"onSelectChange($event)\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n</div>\n"
+module.exports = "<h2 id=\"numAdsWatched\">Ads Watched: {{adsWatched}}</h2>\n\n<div id=\"fullpage\">\n  <button id='btn_showvideo'>Preparing Ad</button>\n  <br><br><br>\n  <mat-select id=\"charitySelect\" placeholder=\"Charity\" [value]=selectedCharity (selectionChange)=\"onSelectChange($event)\">\n    <mat-option *ngFor=\"let charity of charities\" [value]=\"charity.value\">\n      {{charity.viewValue}}\n    </mat-option>\n  </mat-select>\n\n  <br><br><br>\n  <button id=\"adTest\"></button>\n</div>\n"
 
 /***/ }),
 
@@ -466,6 +466,10 @@ var WatchadComponent = /** @class */ (function () {
         this.injector = injector;
         this.adsWatched = 0;
         this.selectedCharity = 0;
+        this.appData = {
+            numWatched: 0,
+            charityChoice: 0
+        };
         this.charities = [
             { value: 0, viewValue: 'Random' },
             { value: 1, viewValue: 'Habitat for Humanity' },
@@ -473,17 +477,18 @@ var WatchadComponent = /** @class */ (function () {
             { value: 3, viewValue: 'WildAid' }
         ];
         this.http = injector.get(_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]);
+        var localData = JSON.parse(window.localStorage.getItem('data'));
+        if (localData !== null) {
+            this.appData = tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"]({}, this.appData, localData);
+        }
+        // @ts-ignore
+        this.adsWatched = this.appData.numWatched;
+        // @ts-ignore
+        this.selectedCharity = this.appData.charityChoice;
     }
     WatchadComponent.prototype.ngOnInit = function () {
         var that = this;
         var admobid = {};
-        var appData = JSON.parse(window.localStorage.getItem('data'));
-        if (appData === null) {
-            appData = {
-                numWatched: 0,
-                charityChoice: 0
-            };
-        }
         var onDeviceReady = function () {
             // @ts-ignore
             if (!AdMob) {
@@ -586,7 +591,7 @@ var WatchadComponent = /** @class */ (function () {
                     console.log('Congratulations, you were rewarded!');
                     var charityNumber = that.selectedCharity;
                     if (charityNumber === 0) {
-                        charityNumber = Math.floor(Math.random() * that.charities.length) + 1;
+                        charityNumber = Math.ceil(Math.random() * that.charities.length - 1);
                     }
                     that.http.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity', JSON.stringify({ 'charity': charityNumber })).toPromise()
                         .catch(function (err) {
@@ -595,18 +600,9 @@ var WatchadComponent = /** @class */ (function () {
                     })
                         .finally(function () {
                         that.adsWatched += 1;
+                        // @ts-ignore
+                        that.appData.numWatched += 1;
                     });
-                    // $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-                    //   JSON.stringify({'charity': charityNumber}))
-                    //   .done(function() {
-                    //   })
-                    //   .fail(function(err) {
-                    //     console.log('Failed to send data to server!');
-                    //     console.log(err);
-                    //   })
-                    //   .always(function() {
-                    //     that.adsWatched += 1;
-                    //   });
                 }
             });
             jquery__WEBPACK_IMPORTED_MODULE_3__(document).on('onAdDismiss', function (e) {
@@ -646,13 +642,20 @@ var WatchadComponent = /** @class */ (function () {
         else {
             console.log('Browsers are not supported. :(');
         }
+        jquery__WEBPACK_IMPORTED_MODULE_3__('#adTest').on('click', function () {
+            // @ts-ignore
+            that.appData.numWatched += 1;
+        });
     };
     WatchadComponent.prototype.ngOnDestroy = function () {
         jquery__WEBPACK_IMPORTED_MODULE_3__(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
         jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').off('click');
+        window.localStorage.setItem('data', JSON.stringify(this.appData));
     };
     WatchadComponent.prototype.onSelectChange = function (event) {
         this.selectedCharity = event.value;
+        // @ts-ignore
+        this.appData.chariyChoice = event.value;
     };
     WatchadComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
