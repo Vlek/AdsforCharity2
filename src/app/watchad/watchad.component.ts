@@ -1,4 +1,5 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, Injector} from '@angular/core';
+import {HttpClient, HttpHandler} from '@angular/common/http';
 
 import * as $ from 'jquery';
 
@@ -10,12 +11,14 @@ export interface Charity {
 @Component({
   selector: 'app-watchad',
   templateUrl: './watchad.component.html',
-  styleUrls: ['./watchad.component.css']
+  styleUrls: ['./watchad.component.css'],
+  providers: [HttpClient]
 })
 
 export class WatchadComponent implements OnInit, OnDestroy {
   public adsWatched = 0;
   public selectedCharity = 0;
+  private http: HttpClient;
 
   charities: Charity[] = [
     {value: 0, viewValue: 'Random'},
@@ -24,7 +27,8 @@ export class WatchadComponent implements OnInit, OnDestroy {
     {value: 3, viewValue: 'WildAid'}
   ];
 
-  constructor () {
+  constructor (private injector: Injector) {
+    this.http = injector.get(HttpClient);
   }
 
   ngOnInit(): void {
@@ -160,17 +164,28 @@ export class WatchadComponent implements OnInit, OnDestroy {
               Math.random() * that.charities.length) + 1;
           }
 
-          $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
-            JSON.stringify({'charity': charityNumber}))
-            .done(function() {
-            })
-            .fail(function(err) {
+
+          that.http.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
+            JSON.stringify({'charity': charityNumber})).toPromise()
+            .catch(function(err) {
               console.log('Failed to send data to server!');
               console.log(err);
             })
-            .always(function() {
+            .finally(function() {
               that.adsWatched += 1;
             });
+
+          // $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
+          //   JSON.stringify({'charity': charityNumber}))
+          //   .done(function() {
+          //   })
+          //   .fail(function(err) {
+          //     console.log('Failed to send data to server!');
+          //     console.log(err);
+          //   })
+          //   .always(function() {
+          //     that.adsWatched += 1;
+          //   });
         }
       });
 

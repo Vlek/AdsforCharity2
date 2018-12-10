@@ -14,6 +14,7 @@ import { SettingsComponent } from './settings/settings.component';
 import { AboutComponent } from './about/about.component';
 import { WatchadComponent } from './watchad/watchad.component';
 import { CharitiesComponent } from './charities/charities.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { CharitiesComponent } from './charities/charities.component';
     MatSelectModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {path: '', component: WatchadComponent},
       {path: 'settings', component: SettingsComponent},

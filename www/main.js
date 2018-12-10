@@ -192,6 +192,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _about_about_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./about/about.component */ "./src/app/about/about.component.ts");
 /* harmony import */ var _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./watchad/watchad.component */ "./src/app/watchad/watchad.component.ts");
 /* harmony import */ var _charities_charities_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./charities/charities.component */ "./src/app/charities/charities.component.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+
 
 
 
@@ -229,6 +231,7 @@ var AppModule = /** @class */ (function () {
                 _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
                 _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_6__["BrowserAnimationsModule"],
                 _app_routing_module__WEBPACK_IMPORTED_MODULE_10__["AppRoutingModule"],
+                _angular_common_http__WEBPACK_IMPORTED_MODULE_16__["HttpClientModule"],
                 _angular_router__WEBPACK_IMPORTED_MODULE_11__["RouterModule"].forRoot([
                     { path: '', component: _watchad_watchad_component__WEBPACK_IMPORTED_MODULE_14__["WatchadComponent"] },
                     { path: 'settings', component: _settings_settings_component__WEBPACK_IMPORTED_MODULE_12__["SettingsComponent"] },
@@ -451,13 +454,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WatchadComponent", function() { return WatchadComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_3__);
+
 
 
 
 var WatchadComponent = /** @class */ (function () {
-    function WatchadComponent() {
+    function WatchadComponent(injector) {
+        this.injector = injector;
         this.adsWatched = 0;
         this.selectedCharity = 0;
         this.charities = [
@@ -466,6 +472,7 @@ var WatchadComponent = /** @class */ (function () {
             { value: 2, viewValue: 'The Foodbank' },
             { value: 3, viewValue: 'WildAid' }
         ];
+        this.http = injector.get(_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]);
     }
     WatchadComponent.prototype.ngOnInit = function () {
         var that = this;
@@ -532,7 +539,7 @@ var WatchadComponent = /** @class */ (function () {
                 bgColor: 'black',
             });
             // new events, with variable to differentiate: adNetwork, adType, adEvent
-            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdFailLoad', function (e) {
+            jquery__WEBPACK_IMPORTED_MODULE_3__(document).on('onAdFailLoad', function (e) {
                 // when jquery is used, it will hijack the event,
                 // so we have to get data from original event
                 if (typeof e.originalEvent !== 'undefined') {
@@ -553,7 +560,7 @@ var WatchadComponent = /** @class */ (function () {
                     ', adType: ' + data['adType'] +
                     ', adEvent: ' + data['adEvent']);
             });
-            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdLoaded', function (e) {
+            jquery__WEBPACK_IMPORTED_MODULE_3__(document).on('onAdLoaded', function (e) {
                 if (typeof e.originalEvent !== 'undefined') {
                     // @ts-ignore
                     e = e.originalEvent;
@@ -561,13 +568,13 @@ var WatchadComponent = /** @class */ (function () {
                 var data = e.data || e;
                 // @ts-ignore
                 if (data.adType === 'rewardvideo') {
-                    jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop({
+                    jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').prop({
                         'disabled': false,
                         'textContent': 'Watch Ad!'
                     });
                 }
             });
-            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdPresent', function (e) {
+            jquery__WEBPACK_IMPORTED_MODULE_3__(document).on('onAdPresent', function (e) {
                 if (typeof e.originalEvent !== 'undefined') {
                     // @ts-ignore
                     e = e.originalEvent;
@@ -581,19 +588,28 @@ var WatchadComponent = /** @class */ (function () {
                     if (charityNumber === 0) {
                         charityNumber = Math.floor(Math.random() * that.charities.length) + 1;
                     }
-                    jquery__WEBPACK_IMPORTED_MODULE_2__["post"]('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity', JSON.stringify({ 'charity': charityNumber }))
-                        .done(function () {
-                    })
-                        .fail(function (err) {
+                    that.http.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity', JSON.stringify({ 'charity': charityNumber })).toPromise()
+                        .catch(function (err) {
                         console.log('Failed to send data to server!');
                         console.log(err);
                     })
-                        .always(function () {
+                        .finally(function () {
                         that.adsWatched += 1;
                     });
+                    // $.post('https://h1k8qwwvua.execute-api.us-east-1.amazonaws.com/default/AdsForCharity',
+                    //   JSON.stringify({'charity': charityNumber}))
+                    //   .done(function() {
+                    //   })
+                    //   .fail(function(err) {
+                    //     console.log('Failed to send data to server!');
+                    //     console.log(err);
+                    //   })
+                    //   .always(function() {
+                    //     that.adsWatched += 1;
+                    //   });
                 }
             });
-            jquery__WEBPACK_IMPORTED_MODULE_2__(document).on('onAdDismiss', function (e) {
+            jquery__WEBPACK_IMPORTED_MODULE_3__(document).on('onAdDismiss', function (e) {
                 if (typeof e.originalEvent !== 'undefined') {
                     // @ts-ignore
                     e = e.originalEvent;
@@ -601,14 +617,14 @@ var WatchadComponent = /** @class */ (function () {
                 var data = e.data || e;
                 // @ts-ignore
                 if (data.adType === 'rewardvideo') {
-                    jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop({
+                    jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').prop({
                         'disabled': true,
                         'textContent': 'Preparing Ad'
                     });
                     prepareVideo();
                 }
             });
-            jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').on('click', function () {
+            jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').on('click', function () {
                 // @ts-ignore
                 AdMob.showRewardVideoAd(function () {
                     // This is just the success callback for Showing the ad,
@@ -621,7 +637,7 @@ var WatchadComponent = /** @class */ (function () {
             });
             prepareVideo();
         }
-        jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').prop('disabled', true);
+        jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').prop('disabled', true);
         // on mobile device, we must wait the 'deviceready' event fired by cordova
         if (/(ipad|iphone|ipod|android|windows phone)/i
             .test(navigator.userAgent)) {
@@ -632,8 +648,8 @@ var WatchadComponent = /** @class */ (function () {
         }
     };
     WatchadComponent.prototype.ngOnDestroy = function () {
-        jquery__WEBPACK_IMPORTED_MODULE_2__(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
-        jquery__WEBPACK_IMPORTED_MODULE_2__('#btn_showvideo').off('click');
+        jquery__WEBPACK_IMPORTED_MODULE_3__(document).off('onAdDismiss onAdPresent onAdLoaded onAdFailLoad');
+        jquery__WEBPACK_IMPORTED_MODULE_3__('#btn_showvideo').off('click');
     };
     WatchadComponent.prototype.onSelectChange = function (event) {
         this.selectedCharity = event.value;
@@ -642,9 +658,10 @@ var WatchadComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-watchad',
             template: __webpack_require__(/*! ./watchad.component.html */ "./src/app/watchad/watchad.component.html"),
+            providers: [_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"]],
             styles: [__webpack_require__(/*! ./watchad.component.css */ "./src/app/watchad/watchad.component.css")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injector"]])
     ], WatchadComponent);
     return WatchadComponent;
 }());
